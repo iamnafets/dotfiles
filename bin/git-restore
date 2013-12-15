@@ -1,0 +1,8 @@
+#!/bin/sh
+
+NAME=$1
+shift
+mkdir -pv /tmp/git-restore
+rm -rf /tmp/git-restore/$NAME
+s3cmd get "s3://whisper-code/$NAME" /tmp/git-restore/$NAME
+git clone /tmp/git-restore/$NAME $@

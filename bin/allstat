@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for DIR in *; do
+	cd $DIR;
+	BRANCH=`git status | grep "On branch" | sed "s/# On branch //"`
+	FWTITLE=`echo "$DIR" | sed "s/$/                                                                      /" | cut -c1-55`
+	git status -s -b | head -n1 | sed "s/^/$FWTITLE/"
+	git status -s -b | (read; cat) | sed "s/^/                                                       | /"
+	cd ..
+done

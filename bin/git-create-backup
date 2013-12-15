@@ -1,0 +1,31 @@
+#!/bin/sh
+
+REPO="`basename $(git rev-parse --show-toplevel)`"
+BACK_REPO="$HOME/.git-backup/$REPO"
+BACK_RECEIVE_HOOK="$BACK_REPO/hooks/post-receive"
+BRANCH="`git status | grep 'On branch' | sed 's/# On branch //'`"
+
+mkdir -pv $BACK_REPO
+git init --bare $BACK_REPO
+git remote add backup file://$BACK_REPO
+
+cat > $BACK_RECEIVE_HOOK <<"EOF"
+#!/bin/bash
+echo "Creating bundle"
+REPO=`basename $PWD`
+EOF
+cat >> $BACK_RECEIVE_HOOK <<EOF
+BUNDLE=/tmp/git-backup/$REPO
+mkdir -pv /tmp/git-backup
+EOF
+cat >> $BACK_RECEIVE_HOOK <<"EOF"
+git bundle create $BUNDLE --all
+echo "Pushing to S3"
+EOF
+echo "s3cmd put \$BUNDLE s3://whisper-code/$REPO" >> $BACK_RECEIVE_HOOK
+cat >> $BACK_RECEIVE_HOOK <<"EOF"
+echo "Done"
+EOF
+
+chmod +x $BACK_RECEIVE_HOOK
+git push -u backup $BRANCH

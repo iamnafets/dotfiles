@@ -1,0 +1,11 @@
+[alias]
+	st = status
+[core]
+	excludesfile = ~/.gitignore
+[color]
+	ui = auto
+[user]
+	email = stefan.mai@iamnafets.com
+	name = Stefan Mai
+[push]
+	default = simple
