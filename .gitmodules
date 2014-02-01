@@ -1,0 +1,9 @@
+[submodule "vim/bundle/vim-sbt"]
+	path = vim/bundle/vim-sbt
+	url = https://github.com/derekwyatt/vim-sbt.git
+[submodule "oh-my-zsh"]
+	path = oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh.git
+[submodule "hub"]
+	path = hub
+	url = git://github.com/github/hub.git
