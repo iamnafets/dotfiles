@@ -13,7 +13,7 @@ fi
 mkdir -pv $HOME/share/bin
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-for FILE in `ls $DIR | grep -Ev "install|vim"`; do
+for FILE in `ls $DIR | grep -Ev "install|vim$|README.md"`; do
 	if [ ! -L $HOME/.$FILE ]; then
 		if [ ! -d $HOME/.$FILE ]; then
 			echo "Installing .$FILE"
@@ -22,7 +22,7 @@ for FILE in `ls $DIR | grep -Ev "install|vim"`; do
 	fi
 done
 
-for SUBDIR in `ls $DIR/vim | grep -v bundle`; do
+for SUBDIR in `ls $DIR/vim`; do
 	mkdir -pv $HOME/.vim/$SUBDIR
 	for FILE in `ls $DIR/vim/$SUBDIR`; do
 		if [ ! -L $HOME/.vim/$SUBDIR/$FILE ]; then
@@ -30,12 +30,6 @@ for SUBDIR in `ls $DIR/vim | grep -v bundle`; do
 			ln -sv $DIR/vim/$SUBDIR/$FILE $HOME/.vim/$SUBDIR/$FILE
 		fi
 	done
-done
-for FILE in `ls $DIR/vim/bundle | grep -v README`; do
-	if [ ! -d $HOME/.vim/bundle/$FILE ]; then
-		echo "Installing `cat $DIR/vim/bundle/$FILE` into vim"
-		git clone `cat $DIR/vim/bundle/$FILE` $HOME/.vim/bundle/$FILE
-	fi
 done
 
 if [ ! -f $HOME/share/bin/hub ]; then
