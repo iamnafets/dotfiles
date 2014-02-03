@@ -1,3 +1,4 @@
+[ -f $HOME/.zsh.pre.local ] && source $HOME/.zsh.pre.local
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -51,7 +52,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/share/bin:$HOME/bin:$HOME/.bin"
+export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/share/bin:$HOME/bin:$HOME/.bin"
 
 # # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -66,8 +67,7 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-[ -f $HOME/.profile ] && source $HOME/.profile
-[ -f $HOME/.zsh.local ] && source $HOME/.zsh.local
+[ -f $HOME/.zsh.post.local ] && source $HOME/.zsh.post.local
 
 if [[ ! $TERM =~ screen ]]; then
     exec tmux at

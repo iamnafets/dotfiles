@@ -1,13 +1,17 @@
 #!/bin/bash
 
-if ! git --version > /dev/null; then
+if ! git --version > /dev/null 2> /dev/null; then
 	echo "Need git installed"
 	exit 1
 fi
 
-if ! rake --version > /dev/null; then
-	echo "Need rake installed"
-	exit 1
+if ! rake --version > /dev/null 2> /dev/null; then
+	echo "No rake, skipping some installs"
+else
+	if [ ! -f $HOME/share/bin/hub ]; then
+		echo "Installing hub"
+		( cd ~/.hub && PREFIX=$HOME/share rake install )
+	fi
 fi
 
 mkdir -pv $HOME/share/bin
@@ -15,7 +19,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 for FILE in `ls $DIR | grep -Ev "install|vim$|README.md"`; do
 	if [ ! -L $HOME/.$FILE ]; then
-		if [ ! -d $HOME/.$FILE ]; then
+		if [ ! -e $HOME/.$FILE ]; then
 			echo "Installing .$FILE"
 			ln -sv $DIR/$FILE $HOME/.$FILE
 		fi
@@ -31,9 +35,4 @@ for SUBDIR in `ls $DIR/vim`; do
 		fi
 	done
 done
-
-if [ ! -f $HOME/share/bin/hub ]; then
-	echo "Installing hub"
-	( cd ~/.hub && PREFIX=$HOME/share rake install )
-fi
 
